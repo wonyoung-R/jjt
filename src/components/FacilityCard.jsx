@@ -21,9 +21,9 @@ function FacilityCard({ facility }) {
   const hasImage = thumbnail && !imageError;
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col h-full">
       {/* 썸네일 이미지 */}
-      <div className="relative h-48 bg-gray-200 overflow-hidden">
+      <div className="relative h-48 bg-gray-200 overflow-hidden flex-shrink-0">
         {hasImage ? (
           <>
             {imageLoading && (
@@ -81,7 +81,7 @@ function FacilityCard({ facility }) {
       </div>
 
       {/* 카드 내용 */}
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-grow">
         {/* 장소명 */}
         <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
           {name}
@@ -151,7 +151,7 @@ function FacilityCard({ facility }) {
             href={kakaoMapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-center rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 transition-all duration-200 shadow-md hover:shadow-lg"
+            className="block w-full py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-center rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 transition-all duration-200 shadow-md hover:shadow-lg mt-auto"
           >
             카카오맵에서 보기
           </a>
