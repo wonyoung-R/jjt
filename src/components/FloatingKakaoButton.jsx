@@ -29,7 +29,7 @@ function FloatingKakaoButton() {
       >
         {/* 카카오톡 이미지 */}
         <img
-          src="/images/kakao.png"
+          src={`${import.meta.env.BASE_URL}images/kakao.png`}
           alt="카카오톡"
           className="w-14 h-14 object-contain"
         />

@@ -52,7 +52,7 @@ function FacilityCard({ facility }) {
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-white">
             <img
-              src="/images/placeholder.png"
+              src={`${import.meta.env.BASE_URL}images/placeholder.png`}
               alt="과천 지식정보타운"
               className="w-32 h-32 object-contain"
               onError={(e) => {
