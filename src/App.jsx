@@ -19,6 +19,7 @@ function App() {
   const [selectedSubCategory, setSelectedSubCategory] = useState('all');
   const [selectedDetailCategory, setSelectedDetailCategory] = useState('all');
   const [currentView, setCurrentView] = useState('facilities'); // 'facilities' or 'board'
+  const [searchQuery, setSearchQuery] = useState(''); // 검색어
 
   // Google Sheets 데이터 로드
   useEffect(() => {
@@ -84,6 +85,7 @@ function App() {
   // 필터링된 시설
   const filteredFacilities = useMemo(() => {
     return facilities.filter(facility => {
+      // 카테고리 필터링
       if (selectedCategory !== 'all' && facility['대분류'] !== selectedCategory) {
         return false;
       }
@@ -93,9 +95,28 @@ function App() {
       if (selectedDetailCategory !== 'all' && facility['소분류'] !== selectedDetailCategory) {
         return false;
       }
+      
+      // 검색어 필터링
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        const name = (facility['장소명'] || '').toLowerCase();
+        const address = (facility['주소'] || '').toLowerCase();
+        const mainCat = (facility['대분류'] || '').toLowerCase();
+        const subCat = (facility['중분류'] || '').toLowerCase();
+        const detailCat = (facility['소분류'] || '').toLowerCase();
+        const phone = (facility['전화번호'] || '').toLowerCase();
+        
+        return name.includes(query) || 
+               address.includes(query) || 
+               mainCat.includes(query) || 
+               subCat.includes(query) || 
+               detailCat.includes(query) ||
+               phone.includes(query);
+      }
+      
       return true;
     });
-  }, [facilities, selectedCategory, selectedSubCategory, selectedDetailCategory]);
+  }, [facilities, selectedCategory, selectedSubCategory, selectedDetailCategory, searchQuery]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -112,6 +133,7 @@ function App() {
     setSelectedCategory('all');
     setSelectedSubCategory('all');
     setSelectedDetailCategory('all');
+    setSearchQuery('');
   };
 
   // 게시판 보기
@@ -150,23 +172,57 @@ function App() {
       {/* 카카오톡 플로팅 버튼 */}
       <FloatingKakaoButton />
       
-      <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
-        <FilterPanel
-          categories={categories}
-          selectedCategory={selectedCategory}
-          selectedSubCategory={selectedSubCategory}
-          selectedDetailCategory={selectedDetailCategory}
-          onCategoryChange={handleCategoryChange}
-          onSubCategoryChange={handleSubCategoryChange}
-          onDetailCategoryChange={setSelectedDetailCategory}
-          onReset={handleReset}
-        />
-        
-        <div className="mb-6">
-          <p className="text-lg text-gray-700">
-            총 <span className="font-bold text-primary-600">{filteredFacilities.length}</span>개의 시설
-          </p>
-        </div>
+          <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+            {/* 검색창 */}
+            <div className="mb-6">
+              <div className="relative max-w-2xl mx-auto">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="장소명, 주소, 카테고리, 전화번호로 검색..."
+                  className="w-full px-5 py-4 pl-12 pr-12 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition shadow-sm"
+                />
+                <svg 
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400"
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <FilterPanel
+              categories={categories}
+              selectedCategory={selectedCategory}
+              selectedSubCategory={selectedSubCategory}
+              selectedDetailCategory={selectedDetailCategory}
+              onCategoryChange={handleCategoryChange}
+              onSubCategoryChange={handleSubCategoryChange}
+              onDetailCategoryChange={setSelectedDetailCategory}
+              onReset={handleReset}
+            />
+            
+            <div className="mb-6">
+              <p className="text-lg text-gray-700">
+                {searchQuery && (
+                  <span className="text-gray-500">"{searchQuery}" 검색 결과: </span>
+                )}
+                총 <span className="font-bold text-primary-600">{filteredFacilities.length}</span>개의 시설
+              </p>
+            </div>
 
         {filteredFacilities.length === 0 ? (
           <div className="text-center py-20">
