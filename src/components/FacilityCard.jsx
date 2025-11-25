@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PlaceholderLogo from './PlaceholderLogo';
 
-function FacilityCard({ facility }) {
+function FacilityCard({ facility, isFavorite, onToggleFavorite }) {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
@@ -68,7 +68,7 @@ function FacilityCard({ facility }) {
         )}
         
         {/* 카테고리 뱃지 */}
-        <div className="absolute top-3 left-3 flex gap-2">
+        <div className="absolute top-3 left-3 flex gap-2 z-10">
           <span className="px-3 py-1 bg-primary-600 text-white text-xs font-semibold rounded-full shadow-lg">
             {category}
           </span>
@@ -78,6 +78,31 @@ function FacilityCard({ facility }) {
             </span>
           )}
         </div>
+
+        {/* 즐겨찾기 버튼 */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onToggleFavorite && onToggleFavorite();
+          }}
+          className="absolute top-3 right-3 z-10 p-2 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all duration-200 group/heart"
+          aria-label={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+        >
+          <svg 
+            className={`w-6 h-6 transition-all duration-200 ${
+              isFavorite 
+                ? "text-red-500 fill-current scale-110" 
+                : "text-gray-400 group-hover/heart:text-red-400"
+            }`} 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+            strokeWidth={isFavorite ? 0 : 2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </button>
       </div>
 
       {/* 카드 내용 */}

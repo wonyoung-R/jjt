@@ -48,7 +48,7 @@ function BoardDetail({ post, onBack, onClose }) {
               목록으로
             </button>
             <button
-              onClick={onClose}
+              onClick={onBack}
               className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

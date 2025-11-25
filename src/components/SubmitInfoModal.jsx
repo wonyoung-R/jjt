@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 function SubmitInfoModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
+    category: '맛집 홍보', // 기본값
     title: '',
     content: '',
     businessName: '',
@@ -50,6 +51,7 @@ function SubmitInfoModal({ isOpen, onClose }) {
       // 전송할 데이터
       const submitData = {
         date: currentDate,
+        category: formData.category, // 분류 추가
         title: formData.title,
         content: formData.content,
         businessName: formData.businessName,
@@ -92,6 +94,7 @@ function SubmitInfoModal({ isOpen, onClose }) {
 
   const resetForm = () => {
     setFormData({
+      category: '맛집 홍보',
       title: '',
       content: '',
       businessName: '',
@@ -119,10 +122,10 @@ function SubmitInfoModal({ isOpen, onClose }) {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white mb-1">
-                사업자 정보 제출
+                📢 소식/이벤트/모임 알리기
               </h2>
               <p className="text-white/90 text-sm">
-                이벤트 / 매장정보 등을 알려주세요
+                신메뉴 출시, 할인 이벤트, 점심 특선 등 지정타 직장인들에게 알리고 싶은 소식을 보내주세요!
               </p>
             </div>
             <button
@@ -139,6 +142,25 @@ function SubmitInfoModal({ isOpen, onClose }) {
 
         {/* 폼 */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* 분류 */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              분류 <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition appearance-none bg-white"
+            >
+              <option value="맛집 홍보">맛집 홍보</option>
+              <option value="메뉴 홍보">메뉴 홍보</option>
+              <option value="이벤트/할인">이벤트/할인</option>
+              <option value="모임/액티비티">모임/액티비티</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+
           {/* 제목 */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/jjt/', // GitHub Pages 저장소 이름에 맞게 설정
+  base: '/', // 로컬 개발 및 배포 시 루트 경로 사용 (필요 시 배포 전에만 변경)
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
