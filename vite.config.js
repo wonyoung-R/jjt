@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/', // 로컬 개발 및 배포 시 루트 경로 사용 (필요 시 배포 전에만 변경)
+  base: command === 'serve' ? '/' : '/jjt/', // 로컬: /, GitHub Pages: /jjt/
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -13,5 +13,5 @@ export default defineConfig({
       },
     },
   },
-})
+}))
 
